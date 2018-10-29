@@ -46,7 +46,7 @@ Icp = I[0:2] 								    #Guardo los Indices de los autovalores mayores que son 
 print('Los componentes principales representan el ', 100*(np.sum(valores[Icp]))/np.sum(valores), "% de la varianza")  #Imprima mensaje que muestre el porcentaje de la varianza representada
 
 CP = vectores[:,Icp] 							    #Saqueme los autovectores de los mayores autovalores -> Componentes principales
-proyecciones = np.matmul(X,CP)                                              #Encuentreme la proyeccion de cada observacion sobre cada componente principal con paquete de numpy
+proyecciones = np.matmul(X,CP)                                              #Encuentreme la proyeccion de cada observacion sobre cada componente principal con paquete de numpy (Multiplica las dos matrices)
 
 #######################Graficar
 plt.figure()								    #Creeme la figura
@@ -56,5 +56,10 @@ plt.xlabel('Componente Principal 1')					    #Nombre ejes
 plt.ylabel('Componente Principal 2')
 plt.legend(['M','B'])							    #Crea la leyenda
 plt.savefig('BonillaWFelipe_PCA.pdf')					    #Guarde la imagen como pdf
+
+#######################Mensaje final:
+print('\n')
+print('Mirando la grafica de las proyecciones de los datos sobre los componentes principales, se observa una clara division espacial entre los diagnosticos Malignos (M) y Benignos(B). Entonces el metodo de PCA si es util para hacer esta clasificacion porque cada caso se puede graficar en estos ejes y saber si queda en la zona de benigno o maligno')
+
 
 
