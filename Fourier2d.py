@@ -1,8 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as img                                
-from scipy.fftpack import ifft2, fft2, fftshift, fftfreq 
-from scipy.stats import lognorm      								       
+from scipy.fftpack import ifft2, fft2, fftshift, fftfreq       								       
 from scipy.interpolate import interp1d          	      
 
 I = img.imread('arbol.png')                                   
@@ -49,7 +48,7 @@ Filtro[ 256-65-m/2:256-65+m/2,  256-65-m/2:256-65+m/2 ] = montana
 I_FT_filtrado = I_FT*Filtro				      
 
 plt.figure()						      
-plt.imshow((log(np.abs(I_FT_filtrado))))                   
+plt.imshow((np.log(np.abs(I_FT_filtrado))))                   
 plt.colorbar()						      
 plt.grid()						      
 plt.savefig('BonillaWFelipe_FT2D_filtrada.pdf')		     
