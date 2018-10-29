@@ -51,5 +51,12 @@ plt.figure()
 plt.imshow((np.log(np.abs(I_FT_filtrado))))                   
 plt.colorbar()						      
 plt.grid()						      
-plt.savefig('BonillaWFelipe_FT2D_filtrada.pdf')		     
+plt.savefig('BonillaWFelipe_FT2D_filtrada.pdf')	
+
+#Transformada inversa
+I_filtrado = np.real(ifft2(I_FT_filtrado))		      
+
+plt.figure()						      
+plt.imshow( I_filtrado,cmap='gray')			      
+plt.savefig('BonillaWFelipe_Imagen_filtrada.pdf')	     
 
