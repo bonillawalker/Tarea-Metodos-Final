@@ -25,7 +25,7 @@ plt.savefig('BonillaWFelipe_FT2D.pdf')
 
 
 #################Crear senal base para poder filtrar(Encuentro este metodo en internet):
-width = 0.1                                                   
+width = 0.9                                                   
 m = 10							      
 X,Y = np.meshgrid( np.linspace(-1,1,m), np.linspace(-1,1,m) ) 
 R = np.sqrt(X**2+Y**2)					      
