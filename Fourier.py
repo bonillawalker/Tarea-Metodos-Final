@@ -52,6 +52,7 @@ plt.figure()						  #Creeme la figura
 plt.plot(S[:,0], S[:,1], '.')                             #Grafica los datos de signal.dat
 plt.xlabel('x')						  #Nombre ejes
 plt.ylabel('y')
+plt.title("Grafica Signal.dat")				  #Le crea un titulo
 plt.savefig('BonillaWFelipe_signal.pdf')		  #Guarde la imagen como pdf	
 
 
@@ -68,6 +69,8 @@ plt.figure()						  #Creeme la figura
 plt.plot(S_Freq, np.abs(S_TF))				  #Grafica de el espectro de frecuencias versus el valor absoluto de la transformada
 #plt.xlim([0,500])
 plt.grid()					          #Me pone la cuadricula
+plt.title("Grafica de la transformada de Fourier")	  #Le pone titulo
+plt.ylabel('Transformada')
 plt.savefig('BonillaWFelipe_TF.pdf')			  #Guarde la imagen como pdf
 
 
@@ -88,4 +91,58 @@ plt.figure()						 #Creeme la figura
 plt.plot(S[:,0], S_filtrada)				 #Grafica de la senal filtrada
 #plt.xlim([0,500])
 plt.grid()						 #Me pone la cuadricula
+plt.title("Grafica de la transformada inversa")	         #Le pone titulo
 plt.savefig('BonillaWFelipe_filtrada.pdf')               #Guarde la imagen como pdf
+
+
+
+print('No se puede hacer la transformada de Fourier de incompletos.dat porque los datos no estan muestreados uniformemente y ese es uno de los requisitos para aplicar la transformada de Fourier')
+print('\n')
+
+
+
+################################################################################################
+######################## Interpolaciones
+################################################################################################
+
+# Crear funciones para interpolar
+Interp2 = interp1d(I[:,0], I[:,1], kind='quadratic')   #Con paquete de scipy hago la interpolacion cuadratica
+Interp3 = interp1d(I[:,0], I[:,1], kind='cubic')       #Con paquete de scipy hago la interpolacion cubica
+
+m = 512 					       #Inicializo una variable con los numeros de puntos que me piden
+Ix = np.linspace(min(I[:,0]), max(I[:,0]), m)          #Espacio donde se quiere interpolar
+
+# Calcular interpolaciones
+I2 = Interp2(Ix)					#Calculo la interpolacion cuadratica
+I3 = Interp3(Ix)					#Calculo la interpolacion cubica
+
+# Transformada de Fourier de datos interpolados
+I2_FT = transformadaFourier_DFT(I2)			#Con funcion de arriba calculo la transformada de mis datos interpolados cuadraticamente
+I3_FT = transformadaFourier_DFT(I3)			#Con funcion de arriba calculo la transformada de mis datos interpolados cubicamente
+
+# Frecuencias para datos interpolados
+fmuestreo = 1/(Ix[1]-Ix[0])				#Calcula la frecuencia de muestreo de mis datos interpolados
+I_freq = frecuencias(fmuestreo,m)			#A partir de mi funcion de arriba calculo el espectro de frecuencias de los datos interpolados
+
+
+######################## Grafica  de  tres subplots de la transformada de los datos interpolados
+plt.figure(figsize=(6,10))                             #Creeme la figura con este tamano
+
+plt.subplot(3,1,1)				       #Creeme el primer subplot con la transformada de Fourier 
+plt.plot(S_Freq, np.abs(S_TF))			       #Grafica de el espectro de frecuencias versus el valor absoluto de la transformada de datos sin interpolar			       
+plt.legend(['Signal.dat'])                             #Le pone la leyenda
+
+plt.subplot(3,1,2)				       #Creeme el segundo subplot con la transformada de Fourier con los datos interpolados cuadraticamente
+plt.plot(I_freq, np.abs(I2_FT))                        #Grafica de el espectro de frecuencias versus el valor absoluto de la transformada (datos interpolados cuadraticamente)
+plt.legend(['Interp Cuadratica'])		       #Le pone la leyenda
+
+plt.subplot(3,1,3)				       #Creeme el tercer subplot con la transformada de Fourier con los datos interpolados cubicamente
+plt.plot(I_freq, np.abs(I3_FT))			       #Grafica de el espectro de frecuencias versus el valor absoluto de la transformada (datos interpolados cubicamente)
+plt.legend(['Interp Cubica'])			       #Le pone la leyenda
+
+
+plt.savefig('BonillaWFelipe_TF_interpola.pdf')         #Guarde la imagen como pdf
+
+print('En la interpolacion cubica se incluyen armonicos artificiales de alta frecuencia que no estaban presentes en la senal original. En la interpolacion cuadratica sucede lo mismo pero se incluye mayor cantidad de armonicos y de mayor amplitud. En conclusion las dos interpolaciones le agregan armonicos a la senal.')            #Imprima mensaje que describe las diferencias encontradas
+print('\n')
+
