@@ -28,7 +28,7 @@ def frecuencias(fmuestreo, n):				  #Creo la funcion del espectro de frecuencias
     
     if n/2 % 2 == 0: 					  #Condicion1: Si el numero de datos es par haga esto:
         espectroF = np.linspace(resolucionF,fnyq,n/2)     #Cree arreglo desde resolucionf hasta la frecuencia maxima, cada n/2
-        f[0:n/2] = espectroF				  #Mi arreglo f de 0 a n/2 tendra un valor de espectro f
+        f[0:n/2] = espectroF				  #Mi arreglo f de 0 a n/2 tendra un valor de espectro f.
         f[n/2:] = -espectroF[::-1]			  #Mi arreglo f de n/2 en adelante es mi arreglo espectrof de atras para delante y negativo (Lo voltea)
         
     else: 					          #Condicion2: Si el numero de datos impar haga esto:
