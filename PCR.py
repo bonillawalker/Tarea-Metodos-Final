@@ -55,7 +55,7 @@ plt.plot(proyecciones[Diagnostic=='B',0], proyecciones[Diagnostic=='B',1], 'o', 
 plt.xlabel('Componente Principal 1')					    #Nombre ejes
 plt.ylabel('Componente Principal 2')
 plt.legend(['M','B'])							    #Crea la leyenda
-plt.savefig('BonillaWFelipe_PCA.pdf')					    #Guarde la imagen como pdf
+plt.savefig('BonillaWFelipe_PCA.pdf')					    #Guarde la imagen como pdf.
 
 #######################Mensaje final:
 print('\n')
