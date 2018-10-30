@@ -146,3 +146,42 @@ plt.savefig('BonillaWFelipe_TF_interpola.pdf')         #Guarde la imagen como pd
 print('En la interpolacion cubica se incluyen armonicos artificiales de alta frecuencia que no estaban presentes en la senal original. En la interpolacion cuadratica sucede lo mismo pero se incluye mayor cantidad de armonicos y de mayor amplitud. En conclusion las dos interpolaciones le agregan armonicos a la senal.')            #Imprima mensaje que describe las diferencias encontradas
 print('\n')
 
+# Nuevas frecuencias de corte
+fc1 = 500				#Asigno un valor para una frecuencia de corte							
+fc2 = 1000				#Asigno un valor para la otra frecuencia de corte
+
+# Aplicar filtros a las senales I2 e I3
+I2_FT_filtro1 = pasa_bajas(fc1, I2_FT, I_freq)	#En estas cuatro lineas aplico la funcion de arriba que me filtra mis datos
+I2_FT_filtro2 = pasa_bajas(fc2, I2_FT, I_freq)
+I3_FT_filtro1 = pasa_bajas(fc1, I3_FT, I_freq)
+I3_FT_filtro2 = pasa_bajas(fc2, I3_FT, I_freq)
+
+# Aplicar transformada Inversa a senales filtradas de I2 e I3 y toca que toma solo las partes reales
+I2_filtrado1 = np.real(ifft(I2_FT_filtro1))	#Esto me saca la parte real de la transformada inversa de mis senales filtradas!		
+I2_filtrado2 = np.real(ifft(I2_FT_filtro2))	#Se usa el mismo paquete de numpy usado arriba
+I3_filtrado1 = np.real(ifft(I3_FT_filtro1))
+I3_filtrado2 = np.real(ifft(I3_FT_filtro2))
+
+
+
+########################## Grafica de transformadas inversas
+plt.figure(figsize=(6,10))                            #Creeme la figura con este tamano
+
+plt.subplot(2,1,1)				      #Creeme el primer subplot
+plt.plot(S[:,0], S_filtrada)			      #Ploteeme los tres casos
+plt.plot(Ix, I2_filtrado1)			      #Ploteeme la senal filtrada
+plt.plot(Ix, I3_filtrado1)			      #Ploteeme la senal con el otro filtro 
+plt.legend(['Signal.dat', 'Interp Cuadratica', 'Interp Cubica']) #Le pone la leyenda
+plt.title('Filtro pasa bajas a ' + str(fc1))  			 #Le pone el titulo
+
+plt.subplot(2,1,2)						 #Creeme el segundo subplot
+plt.plot(S[:,0], S_filtrada)					 #Ploteeme el caso filtrado 
+plt.plot(Ix, I2_filtrado2)					 #Ploteeme la senal filtrada
+plt.plot(Ix, I3_filtrado2)					 #Ploteeme la senal con el otro filtro 
+plt.legend(['Signal.dat', 'Interp Cuadratica', 'Interp Cubica']) #Le pone la leyenda
+plt.title('Filtro pasa bajas a ' + str(fc2))			 #Le pone el titulo
+
+
+
+plt.savefig('BonillaWFelipe_2Filtros.pdf')			 #Guarde la imagen como pdf
+
