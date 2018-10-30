@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as img                                #Con esto puedo leer la imagen.png
-from scipy.fftpack import ifft2, fft2, fftshift, fftfreq      #Este paquete me sirve para la transformada inversa de fourier, la transformada normal, desplazar el componente de frecuencia cero al centro 								       del espectro y calcular las frecuencias de muestra de la transformada de Fourier todo esto para 2D.
+from scipy.fftpack import ifft2, fft2, fftshift, fftfreq      #Este paquete me sirve para la transformada inversa de fourier, la transformada normal, desplazar el componente de frecuencia cero al centro del espectro y calcular las frecuencias de muestra de la transformada de Fourier todo esto para 2D.
 from scipy.interpolate import interp1d          	      #Este paquete lo uso para realizar las interpolaciones
 
 I = img.imread('arbol.png')                                   #Lea y guarde la imagen
@@ -24,12 +24,14 @@ plt.savefig('BonillaWFelipe_FT2D.pdf')			      #Guarde la imagen como pdf
 
 
 
-#################Crear senal base para poder filtrar(Encuentro este metodo en internet):
-width = 0.25                                                   #Se le da un valor para el ancho
+#En esta ultima imagen se puede ver los puntos naranjas que representan los picos de la montana. Lo que se tiene son unas montanas en la transformada de Fourier y estas son las que producen el ruido en la imagen. Al filtrar estas transformadas lo que quiero hacer es disminuir estos picos y de esta manera disminuir el ruido. Para la disminucion se puede multiplicar por una montana al reves que tiene un valor entre 1 y uno casi cero, lo cual produce que los bordes se multipliquen por uno y no cambien, pero que el pico se multiplica por un valor pequeno que disminuye su valor.
+
+#################Crear senal base para poder filtrar:
+width = 0.25                                                  #Se le da un valor para el ancho
 m = 10							      #Iniciar m!!!
 X,Y = np.meshgrid( np.linspace(-1,1,m), np.linspace(-1,1,m) ) #Crear una cuadricula a partir de una matriz de valores x y una matriz de valores y.(Me deja moverme como coordenadas)
 R = np.sqrt(X**2+Y**2)					      #Calculo el valor de la magnitud del vector XY
-montana = np.exp(-6*np.exp(-(R**2)/width))		      #Creo mi funcion montana que depende de R y width (Sacada de internet)
+montana = np.exp(-6*np.exp(-(R**2)/width))		      #Creo mi funcion montana que me diminuye el ruido volviendo el pico pequeno
 
 
 ##################Crear filtro general:
@@ -40,7 +42,7 @@ Filtro = np.ones(np.shape(I))				      #Creo arreglo de unos para guardar despue
 Filtro[ 10-m/2:10+m/2,  25-m/2:25+m/2 ] = montana	      #En estas cuatro lineas lo que hago es pararme en esas posiciones de mi arreglo de unos y las convierto en el valor de mi funcion montana
 Filtro[ 65-m/2:65+m/2,  65-m/2:65+m/2 ] = montana
 Filtro[ 256-10-m/2:256-10+m/2,  256-25-m/2:256-25+m/2 ] = montana
-Filtro[ 256-65-m/2:256-65+m/2,  256-65-m/2:256-65+m/2 ] = montana
+Filtro[ 256-65-m/2:256-65+m/2,  256-65-m/2:256-65+m/2 ] = montana #Los puntos los encontre con prueba y error hasta que se viera mejor la imagen
 
 
 
